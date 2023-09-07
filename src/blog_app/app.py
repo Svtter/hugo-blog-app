@@ -1,5 +1,9 @@
 import PySimpleGUI as sg
 from blog_app.editor import open_post_editor, new_post
+import logging
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.FileHandler('/tmp/blog_app.log'))
 
 
 def main():
@@ -23,10 +27,14 @@ def main():
             open_post_editor()
         if event == sg.WIN_CLOSED or event == "Cancel":  # if user closes window or clicks cancel
             break
+        logger.info('input value: {values}'.format(values=values))
 
     window.close()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.exception(e)
 
